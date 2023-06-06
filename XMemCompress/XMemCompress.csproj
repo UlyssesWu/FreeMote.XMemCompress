@@ -20,7 +20,8 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<Content CopyToOutputDirectory="PreserveNewest" Include="lib/xcompress32.dll" Link="xcompress32.dll" Pack="true" PackagePath="build/xcompress32.dll" />
+		<Content CopyToOutputDirectory="PreserveNewest" Include="lib/xcompress64.dll" Link="x64/xcompress.dll" Pack="true" PackagePath="build/x64/xcompress.dll" />
+		<Content CopyToOutputDirectory="PreserveNewest" Include="lib/xcompress32.dll" Link="x86/xcompress.dll" Pack="true" PackagePath="build/x86/xcompress.dll" />
 		<Content Include="lib\FreeMote.XMemCompress.targets">
 			<PackagePath>build</PackagePath>
 			<Pack>true</Pack>
@@ -28,7 +29,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="README.md">
+	  <None Include="..\README.md" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="..\README.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>

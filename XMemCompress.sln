@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.32916.344
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XMemCompress", "XMemCompress\XMemCompress.csproj", "{7B4C8472-9658-4EAF-B745-04F385A4A33D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMemTest", "XMemTest\XMemTest.csproj", "{D1C8BA88-BA8A-4E6E-A1B0-4CF2C92C5AEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7B4C8472-9658-4EAF-B745-04F385A4A33D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B4C8472-9658-4EAF-B745-04F385A4A33D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B4C8472-9658-4EAF-B745-04F385A4A33D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1C8BA88-BA8A-4E6E-A1B0-4CF2C92C5AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1C8BA88-BA8A-4E6E-A1B0-4CF2C92C5AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1C8BA88-BA8A-4E6E-A1B0-4CF2C92C5AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1C8BA88-BA8A-4E6E-A1B0-4CF2C92C5AEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

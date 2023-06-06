@@ -9,14 +9,14 @@ namespace XMemCompress
         public DecompressionContext(XMEMCODEC_TYPE codec = XMEMCODEC_TYPE.XMEMCODEC_LZX)
         {
             int ret;
-            if ((ret = XCompress32.XMemCreateDecompressionContext(codec, 0, 0, ref _context)) != 0)
+            if ((ret = XCompress.XMemCreateDecompressionContext(codec, 0, 0, ref _context)) != 0)
                 throw new XCompressException($"XMemCreateDecompressionContext returned non-zero value {ret}.");
         }
 
         public void Reset()
         {
             int ret;
-            if ((ret = XCompress32.XMemResetDecompressionContext(_context)) != 0)
+            if ((ret = XCompress.XMemResetDecompressionContext(_context)) != 0)
                 throw new XCompressException($"XMemResetDecompressionContext returned non-zero value {ret}.");
         }
 
@@ -30,7 +30,7 @@ namespace XMemCompress
         {
             var len = output.Length;
             int ret;
-            if ((ret = XCompress32.XMemDecompress(_context, output, ref len, data, data.Length)) != 0)
+            if ((ret = XCompress.XMemDecompress(_context, output, ref len, data, data.Length)) != 0)
                 throw new XCompressException($"XMemDecompress returned non-zero value {ret}.");
             Array.Resize(ref output, len);
         }
@@ -50,7 +50,7 @@ namespace XMemCompress
 
         public void Dispose()
         {
-            XCompress32.XMemDestroyDecompressionContext(_context);
+            XCompress.XMemDestroyDecompressionContext(_context);
         }
     }
 }
