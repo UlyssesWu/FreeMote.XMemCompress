@@ -1,9 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	<LangVersion>latest</LangVersion>
+	<ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>FreeMote.$(AssemblyName)</PackageId>
+    <Title>FreeMote.XMemCompress</Title>
+    <Authors>James Puleo;Ulysses Wu</Authors>
+    <Company>UlyssesWu</Company>
+    <Product>FreeMote</Product>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/UlyssesWu/FreeMote.XMemCompress</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
+	<ItemGroup>
+		<Content CopyToOutputDirectory="PreserveNewest" Include="lib/xcompress32.dll" Link="xcompress32.dll" Pack="true" PackagePath="build/xcompress32.dll" />
+    </ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 </Project>
