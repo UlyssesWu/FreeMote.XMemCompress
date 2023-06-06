@@ -14,28 +14,28 @@ namespace XMemCompress
     {
         private const string DLL = "xcompress32.dll";
 
-        [DllImport(DLL, CallingConvention = CallingConvention.StdCall )]
-        public extern static int XMemCreateDecompressionContext( XMEMCODEC_TYPE codec, int param, int flags, ref int context );
+        [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
+        public static extern int XMemCreateDecompressionContext(XMEMCODEC_TYPE codec, int param, int flags, ref int context);
 
-        [DllImport(DLL, CallingConvention = CallingConvention.StdCall )]
-        public extern static int XMemResetDecompressionContext( int context );
+        [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
+        public static extern int XMemResetDecompressionContext(int context);
 
-        [DllImport(DLL, CallingConvention = CallingConvention.StdCall )]
-        public extern static int XMemDecompress( int context, byte[] dest, ref int destLen, byte[] src, int srcLen );
+        [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
+        public static extern int XMemDecompress(int context, byte[] dest, ref int destLen, byte[] src, int srcLen);
 
-        [DllImport(DLL, CallingConvention = CallingConvention.StdCall )]
-        public extern static void XMemDestroyDecompressionContext( int context );
+        [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
+        public static extern void XMemDestroyDecompressionContext(int context);
 
-        [DllImport(DLL, CallingConvention = CallingConvention.StdCall )]
-        public extern static int XMemCreateCompressionContext( XMEMCODEC_TYPE codec, int param, int flags, ref int context );
+        [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
+        public static extern int XMemCreateCompressionContext(XMEMCODEC_TYPE codec, int param, int flags, ref int context);
 
-        [DllImport(DLL, CallingConvention = CallingConvention.StdCall )]
-        public extern static int XMemResetCompressionContext( int context );
+        [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
+        public static extern int XMemResetCompressionContext(int context);
 
-        [DllImport(DLL, CallingConvention = CallingConvention.StdCall )]
-        public extern static int XMemCompress( int context, byte[] dest, ref int destLen, byte[] src, int srcSize );
+        [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
+        public static extern int XMemCompress(int context, byte[] dest, ref int destLen, byte[] src, int srcSize);
 
-        [DllImport(DLL, CallingConvention = CallingConvention.StdCall )]
-        public extern static void XMemDestroyCompressionContext( int context );
+        [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
+        public static extern void XMemDestroyCompressionContext(int context);
     }
 }

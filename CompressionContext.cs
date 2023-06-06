@@ -1,3 +1,5 @@
+using System;
+
 namespace XMemCompress
 {
     public class CompressionContext : IDisposable
