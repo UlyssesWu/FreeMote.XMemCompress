@@ -15,9 +15,17 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="lib\FreeMote.XMemCompress.targets" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<Content CopyToOutputDirectory="PreserveNewest" Include="lib/xcompress32.dll" Link="xcompress32.dll" Pack="true" PackagePath="build/xcompress32.dll" />
-    </ItemGroup>
+		<Content Include="lib\FreeMote.XMemCompress.targets">
+			<PackagePath>build</PackagePath>
+			<Pack>true</Pack>
+		</Content>
+	</ItemGroup>
 
 	<ItemGroup>
 	  <None Update="README.md">
