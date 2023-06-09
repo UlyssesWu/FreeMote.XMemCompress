@@ -4,12 +4,16 @@ namespace XMemCompress
 {
     public class DecompressionContext : IDisposable
     {
-        private int _context;
+        private IntPtr _context;
 
-        public DecompressionContext(XMEMCODEC_TYPE codec = XMEMCODEC_TYPE.XMEMCODEC_LZX)
+        public DecompressionContext(XMEMCODEC_PARAMETERS_LZX codecParams, XMEMCODEC_TYPE codec = XMEMCODEC_TYPE.XMEMCODEC_LZX)
         {
+            //XMEMCODEC_PARAMETERS_LZX codecParams;
+            //codecParams.Flags = 0;
+            //codecParams.WindowSize = 524288;//64 * 1024;
+            //codecParams.CompressionPartitionSize = 524288;//256 * 1024;
             int ret;
-            if ((ret = XCompress.XMemCreateDecompressionContext(codec, 0, 0, ref _context)) != 0)
+            if ((ret = XCompress.XMemCreateDecompressionContext(codec, codecParams, 0, ref _context)) != 0)
                 throw new XCompressException($"XMemCreateDecompressionContext returned non-zero value {ret}.");
         }
 
@@ -28,22 +32,24 @@ namespace XMemCompress
         /// <returns>The total size of the compressed data.</returns>
         public void Decompress(byte[] data, ref byte[] output)
         {
-            var len = output.Length;
+            var targetLen = output.Length;
+            var srcLen = data.Length;
             int ret;
-            if ((ret = XCompress.XMemDecompress(_context, output, ref len, data, data.Length)) != 0)
+            
+            if ((ret = XCompress.XMemDecompress(_context, output, ref targetLen, data, srcLen)) != 0)
                 throw new XCompressException($"XMemDecompress returned non-zero value {ret}.");
-            Array.Resize(ref output, len);
+            Array.Resize(ref output, targetLen);
         }
 
         /// <summary>
         /// Decompresses compressed data.
         /// </summary>
         /// <param name="data">The data to decompress.</param>
-        /// <param name="len">Length of the compressed data.</param>
+        /// <param name="uncompressedSize">Length of the uncompressed data.</param>
         /// <returns>The decompressed data.</returns>
-        public byte[] Decompress(byte[] data, int len)
+        public byte[] Decompress(byte[] data, int uncompressedSize)
         {
-            var output = new byte[len];
+            var output = new byte[uncompressedSize];
             Decompress(data, ref output);
             return output;
         }

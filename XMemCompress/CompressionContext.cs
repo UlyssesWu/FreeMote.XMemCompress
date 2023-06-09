@@ -4,12 +4,16 @@ namespace XMemCompress
 {
     public class CompressionContext : IDisposable
     {
-        private int _context;
+        private IntPtr _context;
 
-        public CompressionContext( XMEMCODEC_TYPE codec = XMEMCODEC_TYPE.XMEMCODEC_LZX )
+        public CompressionContext(XMEMCODEC_PARAMETERS_LZX codecParams, XMEMCODEC_TYPE codec = XMEMCODEC_TYPE.XMEMCODEC_LZX )
         {
+            //XMEMCODEC_PARAMETERS_LZX codecParams;
+            //codecParams.Flags = 0;
+            //codecParams.WindowSize = 64 * 1024;
+            //codecParams.CompressionPartitionSize = 256 * 1024;
             int ret;
-            if ( ( ret = XCompress.XMemCreateCompressionContext( codec, 0, 0, ref _context ) ) != 0 )
+            if ( ( ret = XCompress.XMemCreateCompressionContext( codec, codecParams, 0, ref _context ) ) != 0 )
                 throw new XCompressException( $"XMemCreateCompressionContext returned non-zero value {ret}." );
         }
 

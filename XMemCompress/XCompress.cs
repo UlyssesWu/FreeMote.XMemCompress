@@ -12,8 +12,14 @@ namespace XMemCompress
         XMEMCODEC_LZX = 1
     }
 
-    // TODO: What are those parameters?
-    // TODO: What are those flags?
+    [StructLayout(LayoutKind.Explicit)]
+    public struct XMEMCODEC_PARAMETERS_LZX
+    {
+        [FieldOffset(0)] public uint Flags;
+        [FieldOffset(4)] public uint WindowSize;
+        [FieldOffset(8)] public uint CompressionPartitionSize;
+    }
+
     internal static class XCompress
     {
         static XCompress()
@@ -34,7 +40,7 @@ namespace XMemCompress
                 Trace.TraceWarning($"{nameof(XCompress)}: Failed to get executing assembly location");
                 return;
             }
-            
+
             var platform = Environment.Is64BitProcess ? "x64" : "x86";
             var dir = Path.Combine(path, platform);
             if (File.Exists(Path.Combine(dir, DLL)) || File.Exists(Path.Combine(dir, DLL + ".dll")))
@@ -50,27 +56,27 @@ namespace XMemCompress
         private const string DLL = "xcompress";
 
         [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
-        public static extern int XMemCreateDecompressionContext(XMEMCODEC_TYPE codec, int param, int flags, ref int context);
+        public static extern int XMemCreateDecompressionContext(XMEMCODEC_TYPE codec, XMEMCODEC_PARAMETERS_LZX param, int flags, ref IntPtr context);
 
         [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
-        public static extern int XMemResetDecompressionContext(int context);
+        public static extern int XMemResetDecompressionContext(IntPtr context);
 
         [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
-        public static extern int XMemDecompress(int context, byte[] dest, ref int destLen, byte[] src, int srcLen);
+        public static extern int XMemDecompress(IntPtr context, byte[] dest, ref int destLen, byte[] src, int srcLen);
 
         [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
-        public static extern void XMemDestroyDecompressionContext(int context);
+        public static extern void XMemDestroyDecompressionContext(IntPtr context);
 
         [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
-        public static extern int XMemCreateCompressionContext(XMEMCODEC_TYPE codec, int param, int flags, ref int context);
+        public static extern int XMemCreateCompressionContext(XMEMCODEC_TYPE codec, XMEMCODEC_PARAMETERS_LZX param, int flags, ref IntPtr context);
 
         [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
-        public static extern int XMemResetCompressionContext(int context);
+        public static extern int XMemResetCompressionContext(IntPtr context);
 
         [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
-        public static extern int XMemCompress(int context, byte[] dest, ref int destLen, byte[] src, int srcSize);
+        public static extern int XMemCompress(IntPtr context, byte[] dest, ref int destLen, byte[] src, int srcSize);
 
         [DllImport(DLL, CallingConvention = CallingConvention.StdCall)]
-        public static extern void XMemDestroyCompressionContext(int context);
+        public static extern void XMemDestroyCompressionContext(IntPtr context);
     }
 }
