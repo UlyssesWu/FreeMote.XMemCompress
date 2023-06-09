@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using Be.IO;
+// ReSharper disable MustUseReturnValue
 
 namespace XMemCompress
 {
@@ -37,27 +38,16 @@ namespace XMemCompress
         {
             var pos = stream.Position;
             var bts = new byte[4];
-            // ReSharper disable once MustUseReturnValue
             stream.Read(bts, 0, 4);
             stream.Position = pos;
             var m = BitConverter.ToUInt32(bts, 0); //it's little endian
-            return m switch
-            {
-                BigMagic => false,
-                LittleMagic => true,
-                _ => null
-            };
+            return m == BigMagic ? false : m == LittleMagic ? true : (bool?) null;
         }
 
         public static bool? IsBigEndian(byte[] stream)
         {
             var m = BitConverter.ToUInt32(stream, 0); //it's little endian
-            return m switch
-            {
-                BigMagic => false,
-                LittleMagic => true,
-                _ => null
-            };
+            return m == BigMagic ? false : m == LittleMagic ? true : (bool?) null;
         }
 
         public XCompressFile()
@@ -133,7 +123,7 @@ namespace XMemCompress
                 }
 
                 var chunk = new byte[chunkSize];
-                _ = input.Read(chunk, 0, chunkSize);
+                input.Read(chunk, 0, chunkSize);
                 remaining -= chunkSize;
                 var zip = context.Compress(chunk, chunkSize);
                 if (zip.Length > largestCompressed)
