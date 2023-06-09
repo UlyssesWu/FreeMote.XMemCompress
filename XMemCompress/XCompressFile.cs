@@ -39,7 +39,7 @@ namespace XMemCompress
             var bts = new byte[4];
             // ReSharper disable once MustUseReturnValue
             stream.Read(bts, 0, 4);
-            stream.Position = pos; 
+            stream.Position = pos;
             var m = BitConverter.ToUInt32(bts, 0); //it's little endian
             return m switch
             {
@@ -60,14 +60,25 @@ namespace XMemCompress
             };
         }
 
-        public XCompressFile(){}
+        public XCompressFile()
+        {
+        }
 
         public XCompressFile(string path)
         {
-           using var fs = File.OpenRead(path);
+            using var fs = File.OpenRead(path);
+            var e = IsBigEndian(fs);
+            if (e == null)
+                throw new FormatException("Invalid XCompress file");
+            Init(fs, e.Value, false);
         }
 
         public XCompressFile(Stream input, bool bigEndian = true, bool leaveOpen = true)
+        {
+            Init(input, bigEndian, leaveOpen);
+        }
+
+        private void Init(Stream input, bool bigEndian = true, bool leaveOpen = true)
         {
             BigEndian = bigEndian;
             var br = bigEndian
