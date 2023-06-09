@@ -23,18 +23,21 @@ namespace XMemCompress
         public int LargestUncompressedChunkSize { get; set; }
         public int LargestCompressedChunkSize { get; set; }
 
-        public XMEMCODEC_PARAMETERS_LZX GetParameters() =>
-            new()
+        public XMEMCODEC_PARAMETERS_LZX GetParameters()
+        {
+            return new XMEMCODEC_PARAMETERS_LZX
             {
                 Flags = ContextFlags,
                 WindowSize = WindowSize,
                 CompressionPartitionSize = ChunkSize
             };
+        }
 
         public static bool? IsBigEndian(Stream stream)
         {
             var pos = stream.Position;
             var bts = new byte[4];
+            // ReSharper disable once MustUseReturnValue
             stream.Read(bts, 0, 4);
             stream.Position = pos; 
             var m = BitConverter.ToUInt32(bts, 0); //it's little endian
