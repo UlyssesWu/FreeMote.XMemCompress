@@ -11,14 +11,14 @@ namespace XMemCompress
         public const uint BigMagic = 0x0FF512EE;
         public const uint LittleMagic = 0xEE12F50F;
         public bool BigEndian { get; set; } = true;
-        public uint Version { get; set; }
+        public uint Version { get; set; } = 0x01030000;
         public uint Reserved { get; set; }
 
-        public uint ContextFlags { get; set; }
+        public uint ContextFlags { get; set; } = 0;
 
         //16
-        public uint WindowSize { get; set; }
-        public uint ChunkSize { get; set; }
+        public uint WindowSize { get; set; } = 0x80000;
+        public uint ChunkSize { get; set; } = 0x80000;
         public long UncompressedSize { get; set; }
         public long CompressedSize { get; set; }
         public int LargestUncompressedChunkSize { get; set; }
@@ -96,6 +96,20 @@ namespace XMemCompress
             return x;
         }
 
+        /// <summary>
+        /// Compress to stream using default configuration
+        /// <para>If you need detailed control, use <see cref="Compress"/> instead</para>
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static MemoryStream CompressStream(Stream input)
+        {
+            var x = new XCompressFile();
+            var ms = new MemoryStream();
+            x.Compress(input, ms);
+            return ms;
+        }
+
         public void Compress(Stream input, Stream output)
         {
             var bw = BigEndian ? new BeBinaryWriter(output, Encoding.Default, true) : new BinaryWriter(output, Encoding.Default, true);
@@ -108,8 +122,8 @@ namespace XMemCompress
             bw.Write(UncompressedSize);
             bw.Write(CompressedSize);
             var pos = bw.BaseStream.Position;
-            bw.Write(LargestUncompressedChunkSize);
-            bw.Write(LargestCompressedChunkSize);
+            bw.Write(0); //LargestUncompressedChunkSize
+            bw.Write(0); //LargestCompressedChunkSize
             using var context = new CompressionContext(GetParameters());
             var remaining = input.Length;
             int largestUncompressed = 0;
@@ -139,6 +153,8 @@ namespace XMemCompress
             bw.BaseStream.Position = pos;
             bw.Write(largestUncompressed);
             bw.Write(largestCompressed);
+            LargestUncompressedChunkSize = largestUncompressed;
+            LargestCompressedChunkSize = largestCompressed;
             bw.Flush();
         }
 
@@ -146,6 +162,11 @@ namespace XMemCompress
         {
             var br = BigEndian ? new BeBinaryReader(input, Encoding.Default, true) : new BinaryReader(input, Encoding.Default, true);
             var remaining = CompressedSize;
+            if (LargestUncompressedChunkSize <= 0)
+            {
+                LargestUncompressedChunkSize = (int)ChunkSize;
+            }
+
             using var context = new DecompressionContext(GetParameters());
             while (remaining > 0)
             {
