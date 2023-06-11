@@ -15,9 +15,16 @@ namespace XMemTest
             //var content = ctx.Decompress(zip, 16345); //16345
             //File.WriteAllBytes("test.bytes", content);
 
-            using var zip = File.OpenRead(@"xmem-zip.bytes");
-            using var fs = File.OpenWrite("test2.bytes");
-            XCompressFile.DecompressStream(zip, fs);
+            //using var zip = File.OpenRead(@"xmem-zip.bytes");
+            //using var fs = File.OpenWrite("test2.bytes");
+            //XCompressFile.DecompressStream(zip, fs);
+
+            using var ms = XCompressFile.CompressStream(File.OpenRead(@"scenario_info.psb.m"));
+            File.WriteAllBytes("zip.bytes", ms.ToArray());
+            using var zip = File.OpenRead(@"zip.bytes");
+            using var mms = new MemoryStream();
+            XCompressFile.DecompressStream(ms, mms);
+            var l = mms.Length;
         }
     }
 }

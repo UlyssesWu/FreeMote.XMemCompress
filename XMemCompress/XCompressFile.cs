@@ -107,11 +107,13 @@ namespace XMemCompress
             var x = new XCompressFile();
             var ms = new MemoryStream();
             x.Compress(input, ms);
+            ms.Seek(0, SeekOrigin.Begin);
             return ms;
         }
 
         public void Compress(Stream input, Stream output)
         {
+            var uncompressedSize = input.Length;
             var bw = BigEndian ? new BeBinaryWriter(output, Encoding.Default, true) : new BinaryWriter(output, Encoding.Default, true);
             bw.Write(BigMagic);
             bw.Write(Version);
@@ -119,13 +121,14 @@ namespace XMemCompress
             bw.Write(ContextFlags);
             bw.Write(WindowSize);
             bw.Write(ChunkSize);
+            var pos = bw.BaseStream.Position;
             bw.Write(UncompressedSize);
             bw.Write(CompressedSize);
-            var pos = bw.BaseStream.Position;
-            bw.Write(0); //LargestUncompressedChunkSize
-            bw.Write(0); //LargestCompressedChunkSize
+            bw.Write(LargestUncompressedChunkSize);
+            bw.Write(LargestCompressedChunkSize);
             using var context = new CompressionContext(GetParameters());
             var remaining = input.Length;
+            long compressedSize = 0;
             int largestUncompressed = 0;
             int largestCompressed = 0;
             while (remaining > 0)
@@ -145,16 +148,23 @@ namespace XMemCompress
                     largestCompressed = zip.Length;
                 }
 
+                compressedSize += zip.Length;
                 bw.Write(zip.Length);
                 bw.Write(zip);
                 //context.Reset();
             }
 
-            bw.BaseStream.Position = pos;
-            bw.Write(largestUncompressed);
-            bw.Write(largestCompressed);
+            UncompressedSize = uncompressedSize;
+            CompressedSize = compressedSize;
             LargestUncompressedChunkSize = largestUncompressed;
             LargestCompressedChunkSize = largestCompressed;
+
+            bw.BaseStream.Position = pos;
+            bw.Write(uncompressedSize);
+            bw.Write(compressedSize);
+            bw.Write(largestUncompressed);
+            bw.Write(largestCompressed);
+
             bw.Flush();
         }
 
