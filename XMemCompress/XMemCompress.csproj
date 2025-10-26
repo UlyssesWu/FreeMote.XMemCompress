@@ -13,6 +13,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/UlyssesWu/FreeMote.XMemCompress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,10 +31,6 @@
 
 	<ItemGroup>
 	  <None Include="..\README.md" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="Be.IO" Version="1.0.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
