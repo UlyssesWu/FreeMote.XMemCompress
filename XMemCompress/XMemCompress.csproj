@@ -14,6 +14,7 @@
     <RepositoryUrl>https://github.com/UlyssesWu/FreeMote.XMemCompress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
